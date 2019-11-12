@@ -1,0 +1,2 @@
+<h3>{{appName}} - 密码重置</h3>
+<p>您的激活码是：<strong>{{activeCode}}</strong>, {{activeCodeEmailExpireIn}}分钟内有效。</p>

@@ -9,6 +9,11 @@ class LoginService extends Service {
     return user;
   }
 
+  async getUserById(id) {
+    const user = await this.app.mysql.get('t_user', { id });
+    return user;
+  }
+
   async updateLoginInfo({ id, last_login_time, exercise_days }) {
     const curTime = new Date();
     if (!isSameDate(curTime, last_login_time)) {
@@ -37,8 +42,10 @@ class LoginService extends Service {
       exercise_days,
       refresh_token: refreshToken,
     };
-    await this.app.mysql.update('t_user', row);
-
+    const result = await this.app.mysql.update('t_user', row);
+    if (result.affectedRows !== 1) {
+      throw new Error('user info update falied', { user: row });
+    }
     return {
       accessToken,
       refreshToken,
@@ -97,6 +104,44 @@ class LoginService extends Service {
         access_token: accessToken,
       },
     };
+  }
+
+  async getUserIdByOtherLoginInfo({ open_id, provider }) {
+    const results = await this.app.mysql.select('t_otherlogin', {
+      where: {
+        open_id,
+        provider,
+      },
+      columns: ['uid'],
+    });
+    return results.length === 0 ? null : results[0].uid;
+  }
+
+  async createOtherLoginUser(user, otherLoginInfo) {
+    // 开启自动控制的事务
+    const userId = await this.app.mysql.beginTransactionScope(async conn => {
+      // 插入用户信息到用户表
+      const result = await conn.insert('t_user', user);
+      if (result.affectedRows !== 1) {
+        throw new Error('add user failed');
+      }
+      // 获取刚插入的user的id
+      const userId = result.insertId;
+
+      // 将该用户添加到三方登录信息表中
+      const otherLoginRow = {
+        uid: userId,
+        open_id: otherLoginInfo.open_id,
+        provider: otherLoginInfo.provider,
+      };
+      const res = await conn.insert('t_otherlogin', otherLoginRow);
+      if (res.affectedRows !== 1) {
+        throw new Error('add otherLogin info failed');
+      }
+      return userId;
+    }, this.ctx);
+
+    return userId;
   }
 }
 

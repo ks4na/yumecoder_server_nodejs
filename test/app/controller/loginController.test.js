@@ -126,4 +126,57 @@ describe('test/app/controller/loginController.js', () => {
       assert(refresh_token === userInfo.refresh_token);
     });
   });
+
+  describe('POST /api/refreshToken', () => {
+    let ctx, email;
+    const url = '/api/refreshToken';
+    beforeEach(() => {
+      ctx = app.mockContext();
+      email = '1@qq.com';
+    });
+    it('成功获取有效的access_token', async () => {
+      const userInfo = await ctx.service.loginService.getUserByEmail(email);
+      const { refresh_token, id } = userInfo;
+      const response = await app
+        .httpRequest()
+        .post(url)
+        .send({ refresh_token })
+        .set('Accept', 'application/json');
+      assert(response.body.access_token);
+      const decoded = jwt.verify(
+        response.body.access_token.replace('Bearer ', ''),
+        app.config.token.accessTokenSecret
+      );
+      assert(decoded.userId === id);
+    });
+    it('refresh_token参数校验', async () => {
+      const response = await app
+        .httpRequest()
+        .post(url)
+        .send()
+        .set('Accept', 'application/json');
+      assert(response.status === 422);
+    });
+    it('refresh_token过期', async () => {
+      const response = await app
+        .httpRequest()
+        .post(url)
+        .send({
+          refresh_token:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTU3MzExMTUxNSwiZXhwIjoxNTc0NDA3NTE1fQ.8_QZCUDb1Zr6pVAUeDh_fR41TiEnbYUdeZduAjWgOqQ',
+        })
+        .set('Accept', 'application/json');
+      assert(response.status === 401);
+      assert(response.body.code === 4014);
+    });
+    it('非法的refresh_token', async () => {
+      const response = await app
+        .httpRequest()
+        .post(url)
+        .send({ refresh_token: '12345' })
+        .set('Accept', 'application/json');
+      assert(response.status === 401);
+      assert(response.body.code === 4015);
+    });
+  });
 });

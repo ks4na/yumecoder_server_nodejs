@@ -1,0 +1,2 @@
+<h3>{{appName}} - User Regist</h3>
+<p>Your Active Code is：<strong>{{activeCode}}</strong>, expire in {{activeCodeEmailExpireIn}} minutes.</p>
