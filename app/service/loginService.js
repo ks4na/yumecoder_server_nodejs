@@ -16,25 +16,10 @@ class LoginService extends Service {
 
   async updateLoginInfo({ id, last_login_time, exercise_days }) {
     const curTime = new Date();
-    if (!isSameDate(curTime, last_login_time)) {
+    if (!last_login_time || !isSameDate(curTime, last_login_time)) {
       exercise_days++;
     }
-    const {
-      accessTokenSecret,
-      accessTokenExpireIn,
-      refreshTokenSecret,
-      refreshTokenExpireIn,
-    } = this.config.token;
-    const accessToken =
-      'Bearer ' +
-      jwt.sign({ userId: id }, accessTokenSecret, {
-        expiresIn: accessTokenExpireIn,
-      });
-    const refreshToken =
-      'Bearer ' +
-      jwt.sign({ userId: id }, refreshTokenSecret, {
-        expiresIn: refreshTokenExpireIn,
-      });
+    const { accessToken, refreshToken } = this.genereateTokens(id);
 
     const row = {
       id,
@@ -106,20 +91,19 @@ class LoginService extends Service {
     };
   }
 
-  async getUserIdByOtherLoginInfo({ open_id, provider }) {
-    const results = await this.app.mysql.select('t_otherlogin', {
-      where: {
-        open_id,
-        provider,
-      },
-      columns: ['uid'],
-    });
-    return results.length === 0 ? null : results[0].uid;
+  async getUserByOtherLoginInfo({ open_id, provider }) {
+    const sql =
+      'select u.* from `t_user` u , `t_otherlogin` o where u.id = o.uid and o.provider = ? and o.open_id = ?';
+    const results = await this.app.mysql.query(sql, [provider, open_id]);
+    return results.length > 0 ? results[0] : null;
   }
 
   async createOtherLoginUser(user, otherLoginInfo) {
     // 开启自动控制的事务
-    const userId = await this.app.mysql.beginTransactionScope(async conn => {
+    const {
+      accessToken,
+      refreshToken,
+    } = await this.app.mysql.beginTransactionScope(async conn => {
       // 插入用户信息到用户表
       const result = await conn.insert('t_user', user);
       if (result.affectedRows !== 1) {
@@ -127,6 +111,19 @@ class LoginService extends Service {
       }
       // 获取刚插入的user的id
       const userId = result.insertId;
+
+      // 根据用户id生成 accessToken 和 refreshToken ,并将 refreshToken 存入用户表
+      const { accessToken, refreshToken } = this.genereateTokens(userId);
+      const updateRow = {
+        id: userId,
+        refresh_token: refreshToken,
+      };
+      const updateResult = await conn.update('t_user', updateRow);
+      if (updateResult.affectedRows !== 1) {
+        throw new Error(
+          'update user.refresh_token failed: ' + JSON.stringify(updateRow)
+        );
+      }
 
       // 将该用户添加到三方登录信息表中
       const otherLoginRow = {
@@ -140,10 +137,34 @@ class LoginService extends Service {
           'add otherLogin info failed: ' + JSON.stringify(otherLoginRow)
         );
       }
-      return userId;
+      return { accessToken, refreshToken };
     }, this.ctx);
 
-    return userId;
+    return { accessToken, refreshToken };
+  }
+
+  genereateTokens(userId) {
+    const {
+      accessTokenSecret,
+      accessTokenExpireIn,
+      refreshTokenSecret,
+      refreshTokenExpireIn,
+    } = this.config.token;
+    const accessToken =
+      'Bearer ' +
+      jwt.sign({ userId }, accessTokenSecret, {
+        expiresIn: accessTokenExpireIn,
+      });
+    const refreshToken =
+      'Bearer ' +
+      jwt.sign({ userId }, refreshTokenSecret, {
+        expiresIn: refreshTokenExpireIn,
+      });
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }
 

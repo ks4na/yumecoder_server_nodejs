@@ -91,13 +91,14 @@ class LoginController extends Controller {
       { openId, nickname, gender, avatar }
     );
 
-    // 查询数据库该openId对应的用户id， 没有则新增用户记录
+    // 查询数据库该openId对应的用户， 没有则新增用户记录
     const otherLoginInfo = { open_id: openId, provider: 'qq' };
-    let userId = await service.loginService.getUserIdByOtherLoginInfo(
+    let user = await service.loginService.getUserByOtherLoginInfo(
       otherLoginInfo
     );
-    if (!userId) {
-      const user = {
+    let generatedTokens; // 保存生成的access_token和refresh_token
+    if (user === null) {
+      user = {
         nickname,
         avatar,
         gender: gender === '男' ? 1 : gender === '女' ? 2 : 0,
@@ -109,14 +110,21 @@ class LoginController extends Controller {
         expire_time: ctx.helper.convertDateToString(new Date()),
       };
 
-      // 创建该用户，返回用户id
-      userId = await service.loginService.createOtherLoginUser(
+      // 创建该用户，返回accessToken和refreshToken
+      generatedTokens = await service.loginService.createOtherLoginUser(
         user,
         otherLoginInfo
       );
+    } else {
+      // 更新登录信息，即：最后一次登录时间和练习天数,返回accessToken和refreshToken
+      generatedTokens = await service.loginService.updateLoginInfo(user);
     }
 
-    ctx.body = { userId };
+    ctx.body = {
+      code: 0,
+      access_token: generatedTokens.accessToken,
+      refresh_token: generatedTokens.refreshToken,
+    };
   }
 }
 
