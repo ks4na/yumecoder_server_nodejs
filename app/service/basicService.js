@@ -50,7 +50,7 @@ class BasicService extends Service {
     };
     const result = await this.app.mysql.update('t_user', row);
     if (result.affectedRows !== 1) {
-      throw new Error('update pwd failed');
+      throw new Error('update pwd failed: ' + JSON.stringify(row));
     }
     return true;
   }

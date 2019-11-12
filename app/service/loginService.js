@@ -44,7 +44,7 @@ class LoginService extends Service {
     };
     const result = await this.app.mysql.update('t_user', row);
     if (result.affectedRows !== 1) {
-      throw new Error('user info update falied', { user: row });
+      throw new Error('user info update falied: ' + JSON.stringify(row));
     }
     return {
       accessToken,
@@ -123,7 +123,7 @@ class LoginService extends Service {
       // 插入用户信息到用户表
       const result = await conn.insert('t_user', user);
       if (result.affectedRows !== 1) {
-        throw new Error('add user failed');
+        throw new Error('add user failed: ' + JSON.stringify(user));
       }
       // 获取刚插入的user的id
       const userId = result.insertId;
@@ -136,7 +136,9 @@ class LoginService extends Service {
       };
       const res = await conn.insert('t_otherlogin', otherLoginRow);
       if (res.affectedRows !== 1) {
-        throw new Error('add otherLogin info failed');
+        throw new Error(
+          'add otherLogin info failed: ' + JSON.stringify(otherLoginRow)
+        );
       }
       return userId;
     }, this.ctx);

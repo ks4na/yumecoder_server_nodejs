@@ -13,7 +13,7 @@ class RegistService extends Service {
   async createUser(user) {
     const result = await this.app.mysql.insert('t_user', user);
     if (result.affectedRows !== 1) {
-      throw new Error('user create failed', { user });
+      throw new Error('user create failed: ' + JSON.stringify(user));
     }
     return result.insertId;
   }
@@ -21,7 +21,7 @@ class RegistService extends Service {
   async updateUser(user) {
     const result = await this.app.mysql.update('t_user', user);
     if (result.affectedRows !== 1) {
-      throw new Error('user udpate failed', { user });
+      throw new Error('user udpate failed: ' + JSON.stringify(user));
     }
     return true;
   }
@@ -74,7 +74,7 @@ class RegistService extends Service {
 
     const result = await this.app.mysql.update('t_user', row);
     if (result.affectedRows !== 1) {
-      throw new Error('update user failed');
+      throw new Error('update user failed: ' + JSON.stringify(row));
     }
     return true;
   }
