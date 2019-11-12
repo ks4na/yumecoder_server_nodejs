@@ -12,10 +12,10 @@ module.exports = {
   'tokenMiddleware.expiredToken': 'token expired',
   'tokenMiddleware.invalidToken': 'invalid token',
 
-  // LoginController
-  'LoginController.unexistUser': 'unexist user',
-  'LoginController.inactiveUser': 'inactive user',
-  'LoginController.incorrectAccountOrPwd': 'incorrect account or password',
+  // loginController
+  'loginController.unexistUser': 'unexist user',
+  'loginController.inactiveUser': 'inactive user',
+  'loginController.incorrectAccountOrPwd': 'incorrect account or password',
 
   // loginService
   'loginService.expiredRefreshToken': 'refresh_token expired',
