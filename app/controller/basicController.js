@@ -74,6 +74,7 @@ class BasicController extends Controller {
         password: {
           type: 'password',
           min: 6,
+          max: 18,
         },
         activeCode: {
           type: 'string',

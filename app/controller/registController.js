@@ -33,6 +33,7 @@ class RegistController extends Controller {
         password: {
           type: 'password',
           min: 6,
+          max: 18,
         },
         captcha: 'string',
       },

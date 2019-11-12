@@ -16,6 +16,7 @@ class LoginController extends Controller {
         password: {
           type: 'password',
           min: 6,
+          max: 18,
         },
       },
       { account, password }
@@ -37,7 +38,6 @@ class LoginController extends Controller {
 
     // 如果存在errCode，返回错误信息
     if (errCode !== 0) {
-      ctx.status = 400;
       ctx.body = {
         code: errCode,
         msg: errMsg,
