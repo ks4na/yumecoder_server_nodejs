@@ -115,7 +115,7 @@ class RegistController extends Controller {
         email: 'email',
         activeCode: {
           type: 'string',
-          format: /\d{6}/,
+          format: /^\d{6}$/,
         },
       },
       { email, activeCode }

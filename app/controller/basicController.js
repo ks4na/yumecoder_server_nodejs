@@ -78,7 +78,7 @@ class BasicController extends Controller {
         },
         activeCode: {
           type: 'string',
-          format: /\d{6}/,
+          format: /^\d{6}$/,
         },
       },
       { email, password, activeCode }
