@@ -16,6 +16,11 @@ class QuestionService extends Service {
     const results = await this.app.mysql.query(sql, id);
     return results[0];
   }
+
+  async getQuestionById(id) {
+    const result = await this.app.mysql.get('t_question', { id });
+    return result;
+  }
 }
 
 module.exports = QuestionService;

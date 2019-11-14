@@ -56,4 +56,17 @@ module.exports = {
   // testService
   'testService.notEnoughQuestionToMakePaper': 'not enough questions',
   'testService.specialExercise': ' Special Exercise',
+
+  // remarkController
+  'remarkController.unexistQuestion': 'unexist question',
+  'remarkController.deletedQuestion':
+    'question has been deleted, cannot add remark',
+  'remarkController.unexistRemark': 'unexist remark',
+  'remarkController.deletedRemark': 'deleted remark',
+  'remarkController.hasGivenZan': 'has given a like to this remark',
+  'remarkController.hasNotGivenZan': 'has not given a like to this remark',
+  'remarkController.unexistReplyToUser': 'unexist replyTo user',
+
+  // remarkService
+  'remarkService.deletedReply': '[this remark has been deleted]',
 };

@@ -54,4 +54,16 @@ module.exports = {
   // testService
   'testService.notEnoughQuestionToMakePaper': '没有足够的题目进行组卷',
   'testService.specialExercise': '专项练习',
+
+  // remarkController
+  'remarkController.unexistQuestion': '题目不存在',
+  'remarkController.deletedQuestion': '已删除的题目，无法评论',
+  'remarkController.unexistRemark': '评论不存在',
+  'remarkController.deletedRemark': '该评论已删除',
+  'remarkController.hasGivenZan': '该评论已经点过赞了',
+  'remarkController.hasNotGivenZan': '尚未给该评论点过赞',
+  'remarkController.unexistReplyToUser': '回复对象不存在',
+
+  // remarkService
+  'remarkService.deletedReply': '[该评论已被删除]',
 };

@@ -51,4 +51,20 @@ module.exports = app => {
   );
   router.get('/api/tests/:testId/clone', controller.testController.cloneTest);
   router.post('/api/tests/saveTemp', controller.testController.saveTemp);
+
+  // 评论相关的router
+  router.post('/api/remarks', controller.remarkController.addRemark);
+  router.get('/api/remarks/:remarkId', controller.remarkController.getRemark);
+  router.put(
+    '/api/remarks/:remarkId/addZan',
+    controller.remarkController.addZan
+  );
+  router.put(
+    '/api/remarks/:remarkId/removeZan',
+    controller.remarkController.removeZan
+  );
+  router.post(
+    '/api/remarks/:remarkId/reply',
+    controller.remarkController.addReply
+  );
 };
