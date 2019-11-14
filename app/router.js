@@ -30,25 +30,25 @@ module.exports = app => {
   router.post('/api/login/qq', controller.loginController.qqLogin);
 
   // 练习信息相关的router
-  router.get('/api/test/menu', controller.testController.index);
-  router.post('/api/test/generate', controller.testController.makePaper);
-  router.get('/api/test/:testId', controller.testController.getPaper);
+  router.get('/api/tests/menu', controller.testController.index);
+  router.post('/api/tests/generate', controller.testController.makePaper);
+  router.get('/api/tests/:testId', controller.testController.getPaper);
   router.post(
-    '/api/test/saveUncompleted',
+    '/api/tests/saveUncompleted',
     controller.testController.saveUncompletedTest
   );
   router.post(
-    '/api/test/submit',
+    '/api/tests/submit',
     controller.testController.handleCommittedTest
   );
   router.get(
-    '/api/test/:testId/result',
+    '/api/tests/:testId/result',
     controller.testController.getTestResult
   );
   router.get(
-    '/api/test/:testId/analysis',
+    '/api/tests/:testId/analysis',
     controller.testController.getTestAnalysis
   );
-  router.get('/api/test/:testId/clone', controller.testController.cloneTest);
-  router.post('/api/test/saveTemp', controller.testController.saveTemp);
+  router.get('/api/tests/:testId/clone', controller.testController.cloneTest);
+  router.post('/api/tests/saveTemp', controller.testController.saveTemp);
 };
