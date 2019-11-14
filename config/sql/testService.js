@@ -19,7 +19,7 @@ ORDER BY
   getRightQuestionAmountByUserIdAndCategoryId: `
 SELECT
 	qc.id,
-	COUNT( dq.id ) 
+	COUNT( dq.id ) right_question_amount
 FROM
 	t_questioncategory qc
 	LEFT JOIN t_donequestion dq ON dq.question_id IN ( SELECT id FROM t_question WHERE category_id = qc.id ) 
