@@ -41,4 +41,17 @@ module.exports = {
 
   // basicService
   'basicService.resetPwdEmailSubject': '密码重置',
+
+  // testController
+  'testController.unexistCategory': '该试题分类不存在',
+  'testController.unexistTest': '该试卷不存在',
+  'testController.cannotAccessThisPaper': '没有权限操作该试卷',
+  'testController.paperHasBeenDone': '该试卷已完成',
+  'testController.invalidUserAnswers': 'userAnswers字段存在问题',
+  'testController.paperHasNotBeenDone': '试卷尚未完成',
+  'testController.cannotCopySelfPaper': '无法复制自己的试卷',
+
+  // testService
+  'testService.notEnoughQuestionToMakePaper': '没有足够的题目进行组卷',
+  'testService.specialExercise': '专项练习',
 };

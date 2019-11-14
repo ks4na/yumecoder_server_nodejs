@@ -43,4 +43,17 @@ module.exports = {
 
   // basicService
   'basicService.resetPwdEmailSubject': 'Password Reset',
+
+  // testController
+  'testController.unexistCategory': 'unexist category',
+  'testController.unexistTest': 'unexist test',
+  'testController.cannotAccessThisPaper': 'cannot access this test',
+  'testController.paperHasBeenDone': 'test has been done',
+  'testController.invalidUserAnswers': 'field `userAnswers` has error',
+  'testController.paperHasNotBeenDone': 'test has not been done',
+  'testController.cannotCopySelfPaper': 'cannot copy self paper',
+
+  // testService
+  'testService.notEnoughQuestionToMakePaper': 'not enough questions',
+  'testService.specialExercise': ' Special Exercise',
 };
