@@ -8,7 +8,12 @@ class TestController extends Controller {
     const { userId } = ctx;
     // 获取用户信息
     const user = await service.userService.getUserById(userId);
-    delete user.password; // 删除密码字段
+    const filteredUserInfo = ctx.helper.removeKey(user, [
+      'password',
+      'active_code',
+      'expire_time',
+      'refresh_token',
+    ]);
     // 获取用户已练习的题目数
     const doneQuestionAmount = await service.questionService.getDoneQuestionAmountByUserId(
       userId
@@ -28,7 +33,7 @@ class TestController extends Controller {
       questionCategoryTree
     );
     ctx.body = {
-      user,
+      user: filteredUserInfo,
       doneQuestionAmount,
       rightAmount,
       questionCategoryTree,
@@ -120,9 +125,10 @@ class TestController extends Controller {
     const testQuestions = await service.testService.getQuestionsAndOptionsByTestId(
       test.id
     );
-    // 移除题目答案字段
+    // 移除答案、分析字段
     testQuestions.forEach(item => {
       delete item.answer;
+      delete item.analysis;
     });
     // 挂载到test对象的questions属性上
     test.questions = testQuestions;

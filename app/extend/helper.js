@@ -3,6 +3,7 @@
 const moment = require('moment');
 const CaptchaUtil = require('./captchaUtil/index.js');
 const MailUtil = require('./mailUtil/index.js');
+const _ = require('lodash');
 
 module.exports = {
   /**
@@ -46,5 +47,14 @@ module.exports = {
       curLanguage = defaultLocale;
     }
     return curLanguage;
+  },
+
+  /**
+   * 移除目标对象中指定的属性， 返回移除后的新对象
+   * @param {Object} obj 目标对象
+   * @param {Array} keyArr 需要移除的属性，数组
+   */
+  removeKey(obj, keyArr) {
+    return _.omit(obj, keyArr);
   },
 };
