@@ -67,4 +67,26 @@ module.exports = app => {
     '/api/remarks/:remarkId/reply',
     controller.remarkController.addReply
   );
+
+  // 题目相关的router
+  router.put(
+    '/api/questions/:questionId/collect',
+    controller.questionController.addToCollection
+  );
+  router.put(
+    '/api/questions/:questionId/cancelCollect',
+    controller.questionController.removeFromCollection
+  );
+  router.get(
+    '/api/questions/:questionId/remarks',
+    controller.questionController.getQuestionRemarks
+  );
+  router.get(
+    '/api/questions/:userId/:categoryId/collect',
+    controller.questionController.getCollectedQuestionsByCategoryId
+  );
+  router.get(
+    '/api/questions/:categoryId/mistakes',
+    controller.questionController.gitMistakes
+  );
 };

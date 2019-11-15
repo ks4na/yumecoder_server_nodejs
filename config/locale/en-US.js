@@ -69,4 +69,13 @@ module.exports = {
 
   // remarkService
   'remarkService.deletedReply': '[this remark has been deleted]',
+
+  // questionController
+  'questionController.notInDoneQuestion':
+    'not practiced question or unexist question',
+  'questionController.hasCollected': 'question has been collected',
+  'questionController.notInCollection': 'question not in collection',
+  'questionController.unexistQuestion': 'unexist question',
+  'questionController.invalidCategoryId': 'invalid category id',
+  'questionController.unexistUser': 'invalid user id',
 };

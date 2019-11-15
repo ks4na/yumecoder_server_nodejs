@@ -66,4 +66,12 @@ module.exports = {
 
   // remarkService
   'remarkService.deletedReply': '[该评论已被删除]',
+
+  // questionController
+  'questionController.notInDoneQuestion': '题目尚未练习过或者不存在',
+  'questionController.hasCollected': '题目已收藏过了',
+  'questionController.notInCollection': '题目未被收藏过',
+  'questionController.unexistQuestion': '题目不存在',
+  'questionController.invalidCategoryId': '类别id不合法',
+  'questionController.unexistUser': '用户id不合法',
 };
