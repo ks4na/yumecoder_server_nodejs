@@ -32,6 +32,7 @@ module.exports = app => {
   // 练习信息相关的router
   router.get('/api/tests/menu', controller.testController.index);
   router.post('/api/tests/generate', controller.testController.makePaper);
+  router.get('/api/tests/count', controller.testController.getTestCount);
   router.get('/api/tests/:testId', controller.testController.getPaper);
   router.post(
     '/api/tests/saveUncompleted',

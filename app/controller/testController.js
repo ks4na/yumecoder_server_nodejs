@@ -615,6 +615,14 @@ class TestController extends Controller {
       isTestOwner,
     };
   }
+
+  async getTestCount() {
+    const { ctx, service } = this;
+    const { userId } = ctx;
+
+    const result = await service.testService.getTestCount(userId);
+    ctx.body = result;
+  }
 }
 
 module.exports = TestController;

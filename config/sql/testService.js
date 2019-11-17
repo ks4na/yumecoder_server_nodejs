@@ -112,4 +112,11 @@ WHERE
 	AND dq.create_user = ?
 ORDER BY
 	tq.question_sort ASC`,
+  getTestCountByUserId: `
+SELECT
+	count( id ) AS count 
+FROM
+	t_test 
+WHERE
+	create_user = ? `,
 };

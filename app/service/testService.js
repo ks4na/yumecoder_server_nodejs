@@ -435,6 +435,12 @@ class TestService extends Service {
 
     return clonedTestId;
   }
+
+  async getTestCount(userId) {
+    const sql = sqls.getTestCountByUserId;
+    const results = await this.app.mysql.query(sql, userId);
+    return results[0];
+  }
 }
 
 module.exports = TestService;
