@@ -63,7 +63,8 @@ SELECT
 	question,
 	answer,
 	analysis,
-	knowledge_tag 
+	knowledge_tag,
+	is_deleted
 FROM
 	t_question 
 WHERE
@@ -110,4 +111,111 @@ WHERE
 	AND tq.question_id IN ?
 ORDER BY
 	tq.test_id DESC`,
+  getCollectedQuestionCountByCategory: `
+SELECT
+	qc.id category_id,
+	qc.category_name category_name,
+	count( dq.id ) collected_question_count
+FROM
+	t_donequestion dq
+	LEFT JOIN t_question q ON dq.question_id = q.id
+	LEFT JOIN t_questioncategory qc ON q.category_id = qc.id 
+WHERE
+	dq.is_collected = 1 
+	AND dq.create_user = ?
+GROUP BY
+	qc.id `,
+  getCollectedQuestionCount: `
+SELECT
+	count( * ) as count
+FROM
+	t_donequestion 
+WHERE
+	create_user = ? 
+	AND is_collected = 1`,
+  getMistokenQuestionCountByCategory: `
+SELECT
+	qc.id category_id,
+	qc.category_name category_name,
+	count( dq.id ) collected_question_count 
+FROM
+	t_donequestion dq
+	LEFT JOIN t_question q ON dq.question_id = q.id
+	LEFT JOIN t_questioncategory qc ON q.category_id = qc.id 
+WHERE
+	dq.is_right = 0 
+	AND dq.create_user = ? 
+GROUP BY
+	qc.id`,
+  getMistokenQuestionCount: `
+	SELECT
+	count( * ) as count
+FROM
+	t_donequestion 
+WHERE
+	create_user = ?
+	AND is_right = 0`,
+  getQuestionCountByCategory: `
+SELECT
+	qc.id as category_id,
+	qc.category_name,
+	count( q.id ) AS question_amount 
+FROM
+	t_question q
+	LEFT JOIN t_questioncategory qc ON qc.id = q.category_id 
+-- note: remove condition 'is_deleted = 0'
+-- WHERE
+-- 	q.is_deleted = 0 
+GROUP BY
+	qc.id`,
+  getQuestionCount: `
+SELECT
+	count( * ) as count
+FROM
+	t_question 
+-- note: remove condition 'is_deleted = 0'
+-- WHERE
+--	is_deleted = 0`,
+  getDoneRightQuestionCount: `
+SELECT
+	count( * ) AS count 
+FROM
+	t_donequestion 
+WHERE
+	create_user = ?
+	AND is_right = 1`,
+  getDoneRightQuestionCountByCategory: `
+SELECT
+	qc.id category_id,
+	qc.category_name category_name,
+	count( dq.id ) right_count 
+FROM
+	t_donequestion dq
+	LEFT JOIN t_question q ON dq.question_id = q.id
+	LEFT JOIN t_questioncategory qc ON q.category_id = qc.id 
+WHERE
+	dq.is_right = 1
+	AND dq.create_user = ?
+GROUP BY
+	qc.id`,
+  getDoneQuestionCount: `
+SELECT
+	count( * ) AS count 
+FROM
+	t_donequestion 
+WHERE
+	create_user = ?`,
+  getDoneQuestionCountByCategory: `
+SELECT
+	qc.id category_id,
+	qc.category_name category_name,
+	count( dq.id ) right_question_count 
+FROM
+	t_donequestion dq
+	LEFT JOIN t_question q ON dq.question_id = q.id
+	LEFT JOIN t_questioncategory qc ON q.category_id = qc.id 
+WHERE
+	dq.create_user = ? 
+GROUP BY
+	qc.id`,
 };

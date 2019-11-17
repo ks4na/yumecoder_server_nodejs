@@ -89,4 +89,14 @@ module.exports = app => {
     '/api/questions/:categoryId/mistakes',
     controller.questionController.gitMistakes
   );
+  router.get(
+    '/api/questions/count',
+    controller.questionController.getQuestionCountByCondition
+  );
+
+  // 题目分类相关的router
+  router.get(
+    '/api/questionCategories',
+    controller.questionCategoryController.getQuestionCategories
+  );
 };

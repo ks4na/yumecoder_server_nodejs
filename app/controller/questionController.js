@@ -211,5 +211,65 @@ class QuestionController extends Controller {
       mistakes,
     };
   }
+
+  async getQuestionCountByCondition() {
+    const { ctx, service } = this;
+    const { type, groupByCategory = 'false' } = ctx.query;
+    const acceptableTypes = ['all', 'done', 'collected', 'mistake', 'right'];
+
+    // 参数校验
+    ctx.validate(
+      {
+        type: {
+          type: 'enum',
+          values: acceptableTypes,
+        },
+        groupByCategory: {
+          type: 'enum',
+          values: ['true', 'false'],
+        },
+      },
+      { type, groupByCategory }
+    );
+
+    const { userId } = ctx;
+    const bool_groupByCategory = groupByCategory === 'true';
+    let ret;
+    switch (type) {
+      case 'all':
+        ret = await service.questionService.getQuestionCount(
+          bool_groupByCategory
+        );
+        break;
+      case 'done':
+        ret = await service.questionService.getDoneQuestionCount(
+          userId,
+          bool_groupByCategory
+        );
+        break;
+      case 'collected':
+        ret = await service.questionService.getCollectedQuestionCount(
+          userId,
+          bool_groupByCategory
+        );
+        break;
+      case 'mistake':
+        ret = await service.questionService.getMistokenQuestionCount(
+          userId,
+          bool_groupByCategory
+        );
+        break;
+      case 'right':
+        ret = await service.questionService.getDoneRightQuestionCount(
+          userId,
+          bool_groupByCategory
+        );
+        break;
+      default:
+        throw new Error('unknown type');
+    }
+
+    ctx.body = ret;
+  }
 }
 module.exports = QuestionController;

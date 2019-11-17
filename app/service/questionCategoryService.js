@@ -55,6 +55,35 @@ class QuestionCategoryService extends Service {
     const result = await this.app.mysql.get('t_questioncategory', { id });
     return result;
   }
+
+  async getQuestionCategories(treeStructure) {
+    const categories = await this.app.mysql.select('t_questioncategory', {
+      where: { is_deleted: 0 },
+      columns: ['id', 'category_name', 'layer', 'parent_id', 'sort'],
+    });
+
+    if (treeStructure) {
+      let treeRoot = {
+        id: 0,
+        category_name: 'root node',
+      };
+
+      treeRoot = this.recursiveGenerateTree(treeRoot, categories);
+      return treeRoot;
+    }
+
+    return categories;
+  }
+
+  async recursiveGenerateTree(tree, categories) {
+    const children = categories.filter(item => item.parent_id === tree.id);
+    tree.children = children;
+    for (let i = 0; i < tree.children.length; i++) {
+      let item = tree.children[i];
+      item = this.recursiveGenerateTree(item, categories);
+    }
+    return tree;
+  }
 }
 
 module.exports = QuestionCategoryService;

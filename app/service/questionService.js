@@ -221,6 +221,65 @@ class QuestionService extends Service {
 
     return questions;
   }
+
+  async getCollectedQuestionCount(userId, groupByCategory) {
+    if (groupByCategory) {
+      const sql = sqls.getCollectedQuestionCountByCategory;
+      const results = await this.app.mysql.query(sql, userId);
+      return results;
+    }
+    const sql = sqls.getCollectedQuestionCount;
+    const results = await this.app.mysql.query(sql, userId);
+    return results[0];
+  }
+
+  async getMistokenQuestionCount(userId, groupByCategory) {
+    if (groupByCategory) {
+      const sql = sqls.getMistokenQuestionCountByCategory;
+      const results = await this.app.mysql.query(sql, userId);
+      return results;
+    }
+
+    const sql = sqls.getMistokenQuestionCount;
+    const results = await this.app.mysql.query(sql, userId);
+    return results[0];
+  }
+
+  async getQuestionCount(groupByCategory) {
+    if (groupByCategory) {
+      const sql = sqls.getQuestionCountByCategory;
+      const results = await this.app.mysql.query(sql);
+      return results;
+    }
+
+    const sql = sqls.getQuestionCount;
+    const results = await this.app.mysql.query(sql);
+    return results[0];
+  }
+
+  async getDoneRightQuestionCount(userId, groupByCategory) {
+    if (groupByCategory) {
+      const sql = sqls.getDoneRightQuestionCountByCategory;
+      const results = await this.app.mysql.query(sql, userId);
+      return results;
+    }
+
+    const sql = sqls.getDoneRightQuestionCount;
+    const results = await this.app.mysql.query(sql, userId);
+    return results[0];
+  }
+
+  async getDoneQuestionCount(userId, groupByCategory) {
+    if (groupByCategory) {
+      const sql = sqls.getDoneQuestionCountByCategory;
+      const results = await this.app.mysql.query(sql, userId);
+      return results;
+    }
+
+    const sql = sqls.getDoneQuestionCount;
+    const results = await this.app.mysql.query(sql, userId);
+    return results[0];
+  }
 }
 
 module.exports = QuestionService;
