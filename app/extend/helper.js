@@ -3,6 +3,7 @@
 const moment = require('moment');
 const CaptchaUtil = require('./captchaUtil/index.js');
 const MailUtil = require('./mailUtil/index.js');
+const QiniuUtil = require('./qiniuUtil/index.js');
 const _ = require('lodash');
 
 module.exports = {
@@ -56,5 +57,12 @@ module.exports = {
    */
   removeKey(obj, keyArr) {
     return _.omit(obj, keyArr);
+  },
+
+  /**
+   * 获取qiniuUtil实例
+   */
+  get qiniuUploadUtil() {
+    return QiniuUtil.getInstance().setHelper(this);
   },
 };
