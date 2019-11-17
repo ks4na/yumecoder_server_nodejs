@@ -100,4 +100,18 @@ module.exports = app => {
     '/api/questionCategories',
     controller.questionCategoryController.getQuestionCategories
   );
+
+  // 用户相关的router
+  router.get('/api/users/self', controller.userController.getCurrentUserInfo);
+  router.get('/api/users/:userId', controller.userController.getUserInfo);
+  router.put(
+    '/api/users/self',
+    controller.userController.updateCurrentUserInfo
+  );
+  router.put('/api/users/resetPwd', controller.userController.resetPwd);
+  router.put('/api/users/logout', controller.userController.handleLogout);
+  router.post(
+    '/api/users/uploadAvatar',
+    controller.userController.uploadAvatar
+  );
 };

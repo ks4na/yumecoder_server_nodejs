@@ -74,4 +74,10 @@ module.exports = {
   'questionController.unexistQuestion': '题目不存在',
   'questionController.invalidCategoryId': '类别id不合法',
   'questionController.unexistUser': '用户id不合法',
+
+  // userController
+  'userController.noUpdateField': '缺少需要更新的字段',
+  'userController.cannotBeSamePassword': '新旧密码不能相同',
+  'userController.wrongPassword': '密码错误',
+  'userController.invalidAvatarFormat': '头像字段格式不正确',
 };

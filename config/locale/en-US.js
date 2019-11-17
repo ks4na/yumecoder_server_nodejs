@@ -78,4 +78,11 @@ module.exports = {
   'questionController.unexistQuestion': 'unexist question',
   'questionController.invalidCategoryId': 'invalid category id',
   'questionController.unexistUser': 'invalid user id',
+
+  // userController
+  'userController.noUpdateField': 'lack of udpate field',
+  'userController.cannotBeSamePassword':
+    'new password and old password cannot be the same',
+  'userController.wrongPassword': 'wrong password',
+  'userController.invalidAvatarFormat': 'invalid avatar format',
 };
