@@ -5,7 +5,13 @@ const Controller = require('egg').Controller;
 class HomeController extends Controller {
   async index() {
     const { ctx } = this;
-    ctx.body = 'hi, egg ' + ctx.helper.currentLanguage;
+    const { host, port, database } = ctx.app.config.mysql.client;
+    const retBody = {
+      currentLanguage: ctx.helper.currentLanguage,
+      env: ctx.app.config.env,
+      database: `${host}:${port}/${database}`,
+    };
+    ctx.body = retBody;
   }
 
   async getToken() {
