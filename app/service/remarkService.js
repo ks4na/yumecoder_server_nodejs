@@ -157,7 +157,7 @@ class RemarkService extends Service {
       return true;
     }, this.ctx);
 
-    return true;
+    return result;
   }
 
   async hasGivenZan(remarkId, userId) {
