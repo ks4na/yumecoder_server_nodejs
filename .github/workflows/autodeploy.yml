@@ -41,7 +41,7 @@ jobs:
           options: ''
           ssh_options: ''
           src: '.'
-          dest: '${{ secrets.tencentcloud_USERNAME }}${{ secrets.tencentcloud_HOST }}:./yumecoder/server_nodejs/sit/source'
+          dest: '${{ secrets.tencentcloud_USERNAME }}@${{ secrets.tencentcloud_HOST }}:./yumecoder/server_nodejs/sit/source'
 
       - name: Run docker commands
         uses: appleboy/ssh-action@master
