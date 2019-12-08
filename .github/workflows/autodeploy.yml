@@ -1,0 +1,49 @@
+name: autodeploy
+
+on: 
+  push:
+    branches: 
+      - master
+
+jobs:
+  sit_deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    
+    - name: Run lint (& test, cov ...)
+      run: |
+         npm install 
+         npm run lint
+         
+    - name: Remove useless dirs
+      run: |
+        ls -lha
+        rm -rf node_modules test .git
+        
+    - name: Change config/env to sit
+      run: |
+        echo "sit" > config/env
+        echo "confirm config/env: "
+        cat config/env
+         
+    - name: Deploy to sit server
+      id: deploy
+      uses: Pendect/action-rsyncer@v1.1.0
+      env:
+        DEPLOY_KEY: ${{secrets.tencentcloud_DEPLOY_KEY}}
+      with:
+        flags: '-avzr --delete'
+        options: ''
+        ssh_options: ''
+        src: '.'
+        dest: 'yuusha@49.235.176.149:.yumecoder/server_nodejs/sit/source'
+
+    - name: Display status from deploy
+      run: echo "${{ steps.deploy.outputs.status }}"
