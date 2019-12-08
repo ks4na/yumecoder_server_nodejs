@@ -21,10 +21,10 @@ jobs:
           npm install 
           npm run lint
 
-      - name: Remove useless dirs
+      - name: Remove node_modules
         run: |
           ls -lha
-          rm -rf node_modules test .git .github
+          rm -rf node_modules
 
       - name: Change config/env to sit
         run: |
@@ -36,27 +36,22 @@ jobs:
         uses: Pendect/action-rsyncer@v1.1.0
         env:
           DEPLOY_KEY: ${{secrets.tencentcloud_DEPLOY_KEY}}
-          TC_HOST: ${{ secrets.tencentcloud_HOST }}
-          TC_USERNAME: ${{ secrets.tencentcloud_USERNAME }}
         with:
           flags: '-avzr --delete'
           options: ''
           ssh_options: ''
           src: '.'
-          dest: '$TC_USERNAME@$TC_HOST:./yumecoder/server_nodejs/sit/source'
+          dest: '${{ secrets.tencentcloud_USERNAME }}${{ secrets.tencentcloud_HOST }}:./yumecoder/server_nodejs/sit/source'
 
       - name: Run docker commands
         uses: appleboy/ssh-action@master
         env:
-          TC_HOST: ${{ secrets.tencentcloud_HOST }}
           TC_USERNAME: ${{ secrets.tencentcloud_USERNAME }}
-          TC_DEPLOY_KEY: ${{ secrets.tencentcloud_DEPLOY_KEY }}
         with:
           host: ${{ secrets.tencentcloud_HOST }}
           username: ${{ secrets.tencentcloud_USERNAME }}
           key: ${{ secrets.tencentcloud_DEPLOY_KEY }}
           envs: TC_USERNAME
-          debug: true
           script: |
             cd /home/$TC_USERNAME/yumecoder/server_nodejs/sit
             ./DockerBootstrap.sh
