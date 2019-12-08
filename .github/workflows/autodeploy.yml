@@ -53,8 +53,8 @@ jobs:
           TC_DEPLOY_KEY: ${{ secrets.tencentcloud_DEPLOY_KEY }}
         with:
           host: ${{ secrets.tencentcloud_HOST }}
-          username: ${{ secrets.tencentcloud_HOST }}
-          key: ${{ secrets.tencentcloud_HOST }}
+          username: ${{ secrets.tencentcloud_USERNAME }}
+          key: ${{ secrets.tencentcloud_DEPLOY_KEY }}
           envs: TC_USERNAME
           debug: true
           script: |
