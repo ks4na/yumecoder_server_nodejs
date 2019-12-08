@@ -25,7 +25,7 @@ jobs:
     - name: Remove useless dirs
       run: |
         ls -lha
-        rm -rf node_modules test .git
+        rm -rf node_modules test .git .github
         
     - name: Change config/env to sit
       run: |
@@ -43,7 +43,7 @@ jobs:
         options: ''
         ssh_options: ''
         src: '.'
-        dest: 'yuusha@49.235.176.149:.yumecoder/server_nodejs/sit/source'
+        dest: 'yuusha@49.235.176.149:./yumecoder/server_nodejs/sit/source'
 
     - name: Display status from deploy
       run: echo "${{ steps.deploy.outputs.status }}"
