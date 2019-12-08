@@ -1,62 +1,61 @@
 name: autodeploy
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - master
 
 jobs:
   sit_deploy:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-    
-    - name: Run lint (& test, cov ...)
-      run: |
-         npm install 
-         npm run lint
-         
-    - name: Remove useless dirs
-      run: |
-        ls -lha
-        rm -rf node_modules test .git .github
-        
-    - name: Change config/env to sit
-      run: |
-        echo "sit" > config/env
-        echo "confirm config/env: "
-        cat config/env
-         
-    - name: Deploy to sit server
-      uses: Pendect/action-rsyncer@v1.1.0
-      env:
-        DEPLOY_KEY: ${{secrets.tencentcloud_DEPLOY_KEY}}
-        TC_HOST: ${{ secrets.tencentcloud_HOST }}
-        TC_USERNAME: ${{ secrets.tencentcloud_USERNAME }}
-      with:
-        flags: '-avzr --delete'
-        options: ''
-        ssh_options: ''
-        src: '.'
-        dest: '$TC_USERNAME@$TC_HOST:./yumecoder/server_nodejs/sit/source'
+      - uses: actions/checkout@v1
 
-    - name: Run docker commands
-      uses: appleboy/ssh-action@master
-      env: 
-        TC_HOST: ${{ secrets.tencentcloud_HOST }}
-        TC_USERNAME: ${{ secrets.tencentcloud_USERNAME }}
-        TC_DEPLOY_KEY: ${{ secrets.tencentcloud_DEPLOY_KEY }}
-      with:
-        host: ${{ secrets.tencentcloud_HOST }}
-        username: $TC_USERNAME
-        key: $TC_DEPLOY_KEY
-        envs:  TC_USERNAME
-        script: |
-          cd /home/$TC_USERNAME/yumecoder/server_nodejs/sit
-          ./DockerBootstrap.sh
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      - name: Run lint (& test, cov ...)
+        run: |
+          npm install 
+          npm run lint
+
+      - name: Remove useless dirs
+        run: |
+          ls -lha
+          rm -rf node_modules test .git .github
+
+      - name: Change config/env to sit
+        run: |
+          echo "sit" > config/env
+          echo "confirm config/env: "
+          cat config/env
+
+      - name: Deploy to sit server
+        uses: Pendect/action-rsyncer@v1.1.0
+        env:
+          DEPLOY_KEY: ${{secrets.tencentcloud_DEPLOY_KEY}}
+          TC_HOST: ${{ secrets.tencentcloud_HOST }}
+          TC_USERNAME: ${{ secrets.tencentcloud_USERNAME }}
+        with:
+          flags: '-avzr --delete'
+          options: ''
+          ssh_options: ''
+          src: '.'
+          dest: '$TC_USERNAME@$TC_HOST:./yumecoder/server_nodejs/sit/source'
+
+      - name: Run docker commands
+        uses: appleboy/ssh-action@master
+        env:
+          TC_HOST: ${{ secrets.tencentcloud_HOST }}
+          TC_USERNAME: ${{ secrets.tencentcloud_USERNAME }}
+          TC_DEPLOY_KEY: ${{ secrets.tencentcloud_DEPLOY_KEY }}
+        with:
+          host: ${{ secrets.tencentcloud_HOST }}
+          username: $TC_USERNAME
+          key: $TC_DEPLOY_KEY
+          envs: TC_USERNAME
+          script: |
+            cd /home/$TC_USERNAME/yumecoder/server_nodejs/sit
+            ./DockerBootstrap.sh
