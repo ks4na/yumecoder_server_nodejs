@@ -56,6 +56,7 @@ jobs:
           username: ${{ secrets.tencentcloud_HOST }}
           key: ${{ secrets.tencentcloud_HOST }}
           envs: TC_USERNAME
+          debug: true
           script: |
             cd /home/$TC_USERNAME/yumecoder/server_nodejs/sit
             ./DockerBootstrap.sh
