@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  sit_deploy:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,16 +20,21 @@ jobs:
         run: |
           npm install 
           npm run lint
+          echo "test, cov..."
+          echo "ok"
 
-      - name: Remove node_modules
-        run: |
-          ls -lha
-          rm -rf node_modules
+  deploy_to_sit:
+    needs: ci
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
 
       - name: Change config/env to sit
         run: |
           echo "sit" > config/env
-          echo "confirm config/env: "
+          echo "confirm config/env:"
           cat config/env
 
       - name: Deploy to sit server
@@ -55,4 +60,41 @@ jobs:
           script: |
             cd /home/$TC_USERNAME/yumecoder/server_nodejs/sit
             ./DockerBootstrap.sh
-            
+
+  deploy_to_prod:
+    needs: ci
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Change config/env to prod
+        run: |
+          echo "prod" > config/env
+          echo "confirm config/env:"
+          cat config/env
+
+      - name: Deploy to prod server
+        uses: Pendect/action-rsyncer@v1.1.0
+        env:
+          DEPLOY_KEY: ${{secrets.tencentcloud_DEPLOY_KEY}}
+        with:
+          flags: '-avzr --delete'
+          options: ''
+          ssh_options: ''
+          src: '.'
+          dest: '${{ secrets.tencentcloud_USERNAME }}@${{ secrets.tencentcloud_HOST }}:./yumecoder/server_nodejs/prod/source'
+
+      - name: Run docker commands
+        uses: appleboy/ssh-action@master
+        env:
+          TC_USERNAME: ${{ secrets.tencentcloud_USERNAME }}
+        with:
+          host: ${{ secrets.tencentcloud_HOST }}
+          username: ${{ secrets.tencentcloud_USERNAME }}
+          key: ${{ secrets.tencentcloud_DEPLOY_KEY }}
+          envs: TC_USERNAME
+          script: |
+            cd /home/$TC_USERNAME/yumecoder/server_nodejs/prod
+            ./DockerBootstrap.sh
