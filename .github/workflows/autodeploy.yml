@@ -55,4 +55,3 @@ jobs:
           script: |
             cd /home/$TC_USERNAME/yumecoder/server_nodejs/sit
             ./DockerBootstrap.sh
-            
