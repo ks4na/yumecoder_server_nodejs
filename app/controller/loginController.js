@@ -70,10 +70,7 @@ class LoginController extends Controller {
     );
 
     const result = await loginService.refreshToken(refresh_token);
-    ctx.body = result.data;
-    if (result.err) {
-      ctx.status = 401;
-    }
+    ctx.body = result;
   }
 
   async qqLogin() {
