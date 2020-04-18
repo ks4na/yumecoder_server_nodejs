@@ -16,6 +16,8 @@ module.exports = {
   'loginController.unexistUser': '该用户不存在',
   'loginController.inactiveUser': '该用户尚未激活',
   'loginController.incorrectAccountOrPwd': '邮箱或密码错误',
+  'loginController.getGithubAccessTokenFailed': '获取 Github access_token 失败',
+  'loginController.getGithubUserInfoFailed': '获取 Github 登录用户信息失败',
 
   // loginService
   'loginService.expiredRefreshToken': 'refresh_token已过期',

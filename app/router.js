@@ -28,6 +28,7 @@ module.exports = app => {
   );
   router.post('/api/pwd/reset', controller.basicController.resetPwd);
   router.post('/api/login/qq', controller.loginController.qqLogin);
+  router.post('/api/login/github', controller.loginController.githubLogin);
 
   // 练习信息相关的router
   router.get('/api/tests/menu', controller.testController.index);

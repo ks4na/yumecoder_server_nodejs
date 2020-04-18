@@ -16,6 +16,9 @@ module.exports = {
   'loginController.unexistUser': 'unexist user',
   'loginController.inactiveUser': 'inactive user',
   'loginController.incorrectAccountOrPwd': 'incorrect account or password',
+  'loginController.getGithubAccessTokenFailed':
+    'get Github access_token failed',
+  'loginController.getGithubUserInfoFailed': 'get Github user info failed',
 
   // loginService
   'loginService.expiredRefreshToken': 'refresh_token expired',

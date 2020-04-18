@@ -121,6 +121,13 @@ module.exports = appInfo => {
       domain: 'domain',
       imgStyle: 'imageView2/1/w/200/h/200/q/75|imageslim',
     },
+    // github oauth login config
+    githubConfig: {
+      client_id: 'client_id',
+      client_secret: 'client_secret',
+      access_token_domain: 'https://github.com/login/oauth/access_token',
+      user_info_domain: 'https://api.github.com/user',
+    },
   };
 
   return {

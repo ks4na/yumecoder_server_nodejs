@@ -4,6 +4,7 @@ const moment = require('moment');
 const CaptchaUtil = require('./captchaUtil/index.js');
 const MailUtil = require('./mailUtil/index.js');
 const QiniuUtil = require('./qiniuUtil/index.js');
+const GithubUtil = require('./githubUtil/index.js');
 const _ = require('lodash');
 
 module.exports = {
@@ -64,5 +65,12 @@ module.exports = {
    */
   get qiniuUploadUtil() {
     return QiniuUtil.getInstance().setHelper(this);
+  },
+
+  /**
+   * 获取 githubUtil 实例
+   */
+  get githubUtil() {
+    return GithubUtil.getInstance().setHelper(this);
   },
 };
