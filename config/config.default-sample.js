@@ -50,6 +50,17 @@ module.exports = appInfo => {
       ],
     },
 
+    // lastLoginTime middleware config
+    lastLoginTime: {
+      match: [
+        '/api/tests',
+        '/api/remarks',
+        '/api/questions',
+        '/api/questionCategories',
+        '/api/users',
+      ],
+    },
+
     // mysql单数据库信息配置 (mysql database single instance config)
     mysql: {
       client: {

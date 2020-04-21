@@ -14,6 +14,22 @@ class LoginService extends Service {
     return user;
   }
 
+  async updateLastLoginTime({ id, last_login_time, exercise_days }) {
+    const curTime = new Date();
+    if (!last_login_time || !isSameDate(curTime, last_login_time)) {
+      exercise_days++;
+    }
+    const row = {
+      id,
+      last_login_time: this.ctx.helper.convertDateToString(curTime),
+      exercise_days,
+    };
+    const result = await this.app.mysql.update('t_user', row);
+    if (result.affectedRows !== 1) {
+      throw new Error('update last_login_time falied: ' + JSON.stringify(row));
+    }
+  }
+
   async updateLoginInfo({ id, last_login_time, exercise_days }) {
     const curTime = new Date();
     if (!last_login_time || !isSameDate(curTime, last_login_time)) {
