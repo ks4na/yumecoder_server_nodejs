@@ -62,7 +62,7 @@ jobs:
             ./DockerBootstrap.sh
 
   deploy_to_prod:
-    needs: ci
+    needs: deploy_to_sit
 
     runs-on: ubuntu-latest
 
@@ -98,4 +98,3 @@ jobs:
           script: |
             cd /home/$TC_USERNAME/yumecoder/server_nodejs/prod
             ./DockerBootstrap.sh
-            
