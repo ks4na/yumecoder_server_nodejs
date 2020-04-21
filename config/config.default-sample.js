@@ -38,6 +38,7 @@ module.exports = appInfo => {
     token: {
       accessTokenExpireIn: '2h',
       refreshTokenExpireIn: '15d',
+      refreshTokenRegenerateDaysBefore: 5, // 距离 refresh_token 过期前 xx 天内，自动重新生成 refresh_token
       accessTokenSecret: 'your accessTokenSecret',
       refreshTokenSecret: 'your accessTokenSecret',
       match: [

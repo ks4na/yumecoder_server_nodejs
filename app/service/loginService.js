@@ -2,6 +2,7 @@
 
 const Service = require('egg').Service;
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 
 class LoginService extends Service {
   async getUserByEmail(email) {
@@ -58,10 +59,14 @@ class LoginService extends Service {
     const {
       refreshTokenSecret,
       accessTokenExpireIn,
+      refreshTokenRegenerateDaysBefore,
       accessTokenSecret,
     } = this.config.token;
 
-    let errCode, errMsg, userId;
+    let errCode,
+      errMsg,
+      userId,
+      needRegenerateRefreshToken = false;
     try {
       const decoded = jwt.verify(
         refreshToken.replace('Bearer ', ''),
@@ -72,6 +77,14 @@ class LoginService extends Service {
       if (user.refresh_token !== refreshToken) {
         errCode = 4014;
         errMsg = ctx.__('loginService.expiredRefreshToken');
+      } else {
+        // 判断是否需要刷新 refresh_token
+        if (
+          moment.duration(moment.unix(decoded.exp) - moment()).days() <
+          refreshTokenRegenerateDaysBefore
+        ) {
+          needRegenerateRefreshToken = true;
+        }
       }
     } catch (err) {
       // 2.1. refresh_token过期
@@ -87,23 +100,38 @@ class LoginService extends Service {
 
     if (errCode && errMsg) {
       return {
-        err: true,
-        data: {
-          code: errCode,
-          msg: errMsg,
-        },
+        code: errCode,
+        msg: errMsg,
       };
     }
+    // 如果需要重新生成 refresh_token
+    if (needRegenerateRefreshToken) {
+      const { accessToken, refreshToken } = this.genereateTokens(userId);
+
+      const row = {
+        id: userId,
+        refresh_token: refreshToken,
+      };
+      const result = await this.app.mysql.update('t_user', row);
+      if (result.affectedRows !== 1) {
+        throw new Error('update refresh_token falied: ' + JSON.stringify(row));
+      }
+
+      return {
+        code: 0,
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      };
+    }
+    // 只需要重新获取 access_token, 不需要 refresh_token
     const accessToken =
       'Bearer ' +
       jwt.sign({ userId }, accessTokenSecret, {
         expiresIn: accessTokenExpireIn,
       });
     return {
-      err: false,
-      data: {
-        access_token: accessToken,
-      },
+      code: 0,
+      access_token: accessToken,
     };
   }
 
