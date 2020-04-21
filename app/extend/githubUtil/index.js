@@ -33,6 +33,7 @@ class GithubUtil {
         code,
       },
       dataType: 'json',
+      timeout: 10000,
     });
 
     if (
@@ -62,6 +63,7 @@ class GithubUtil {
         Authorization: `${tokenType} ${accessToken}`,
       },
       dataType: 'json',
+      timeout: 10000,
     });
     if (!response.data) {
       this.helper.ctx.logger.error('get Github user info failed: ', response);
