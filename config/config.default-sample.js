@@ -27,6 +27,8 @@ module.exports = appInfo => {
       csrf: {
         enable: false,
       },
+      // safe domains(egg-cors will also use this as whitelist domains)
+      domainWhiteList: [],
     },
 
     // 多语言 (i18n)
