@@ -1,2 +1,2 @@
 <h3>{{appName}} - Password Reset</h3>
-<p>Your Active Code is：<strong>{{activeCode}}</strong>, expire in {{activeCodeEmailExpireIn}} minutes.</p>
+<p>Your Validation Code is：<strong>{{activeCode}}</strong>, expire in {{activeCodeEmailExpireIn}} minutes.</p>
