@@ -47,6 +47,7 @@ class BasicService extends Service {
       id,
       password,
       expire_time: this.ctx.helper.convertDateToString(new Date()), // 刷新expire_time,避免重复请求仍然有效
+      refresh_token: null, // 清除 refresh_token，让原来的 refresh_token 失效，已有的 access_token 过期后强制重新登录
     };
     const result = await this.app.mysql.update('t_user', row);
     if (result.affectedRows !== 1) {
