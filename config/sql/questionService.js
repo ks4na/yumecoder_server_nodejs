@@ -137,7 +137,7 @@ WHERE
 SELECT
 	qc.id category_id,
 	qc.category_name category_name,
-	count( dq.id ) collected_question_count 
+	count( dq.id ) mistoken_question_count 
 FROM
 	t_donequestion dq
 	LEFT JOIN t_question q ON dq.question_id = q.id
@@ -209,7 +209,7 @@ WHERE
 SELECT
 	qc.id category_id,
 	qc.category_name category_name,
-	count( dq.id ) right_question_count 
+	count( dq.id ) done_question_count 
 FROM
 	t_donequestion dq
 	LEFT JOIN t_question q ON dq.question_id = q.id
