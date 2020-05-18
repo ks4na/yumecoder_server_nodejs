@@ -81,7 +81,7 @@ class UserController extends Controller {
         },
         personalMessage: {
           type: 'string',
-          trim: true,
+          max: 50,
           required: false,
         },
         questionNumberPerTime: {
