@@ -238,9 +238,13 @@ class UserController extends Controller {
 
     // 处理头像更新
     const { userId } = ctx;
-    await service.userService.updateAvatar(imgData, extendName, userId);
+    const avatarSrc = await service.userService.updateAvatar(
+      imgData,
+      extendName,
+      userId
+    );
 
-    ctx.body = true;
+    ctx.body = avatarSrc;
   }
 }
 

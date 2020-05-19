@@ -77,7 +77,7 @@ class UserService extends Service {
         avatar: imgSrc,
       };
       await this.updateUserById(user);
-      return true;
+      return imgSrc;
     } catch (err) {
       this.logger.error(err);
       throw new Error('upload avatar to qiniu oss server failed');
