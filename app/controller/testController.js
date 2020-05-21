@@ -623,6 +623,43 @@ class TestController extends Controller {
     const result = await service.testService.getTestCount(userId);
     ctx.body = result;
   }
+
+  async getDoneTestList() {
+    const { ctx, service } = this;
+    const { userId } = ctx;
+
+    const result = await service.testService.getDoneTestList(userId);
+    ctx.body = result;
+  }
+
+  async getDoneTestListByUserId() {
+    const { ctx, service } = this;
+    const { userId } = ctx.params;
+
+    // 参数校验
+    ctx.validate(
+      {
+        userId: {
+          type: 'id',
+        },
+      },
+      { userId }
+    );
+
+    // 校验 userId 合法性
+    const user = await service.userService.getUserById(userId);
+
+    if (!user) {
+      ctx.body = {
+        code: 1,
+        msg: ctx.__('testController.unexistUser'),
+      };
+      return;
+    }
+
+    const result = await service.testService.getDoneTestList(userId);
+    ctx.body = result;
+  }
 }
 
 module.exports = TestController;

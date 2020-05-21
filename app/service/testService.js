@@ -441,6 +441,12 @@ class TestService extends Service {
     const results = await this.app.mysql.query(sql, userId);
     return results[0];
   }
+
+  async getDoneTestList(userId) {
+    const sql = sqls.getDoneTestListByUserId;
+    const results = await this.app.mysql.query(sql, userId);
+    return results;
+  }
 }
 
 module.exports = TestService;

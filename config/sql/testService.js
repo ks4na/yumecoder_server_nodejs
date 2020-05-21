@@ -119,4 +119,17 @@ FROM
 	t_test 
 WHERE
 	create_user = ? `,
+  getDoneTestListByUserId: `
+SELECT
+	id,
+	test_name,
+	question_amount,
+	correct_amount,
+	is_completed 
+FROM
+	t_test 
+WHERE
+	create_user = ? 
+ORDER BY
+	create_time DESC`,
 };

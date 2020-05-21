@@ -55,6 +55,7 @@ module.exports = {
   'testController.invalidUserAnswers': 'field `userAnswers` has error',
   'testController.paperHasNotBeenDone': 'test has not been done',
   'testController.cannotCopySelfPaper': 'cannot copy self paper',
+  'testController.unexistUser': 'unexist user',
 
   // testService
   'testService.notEnoughQuestionToMakePaper': 'not enough questions',

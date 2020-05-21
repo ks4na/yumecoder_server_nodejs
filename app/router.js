@@ -34,6 +34,11 @@ module.exports = app => {
   router.get('/api/tests/menu', controller.testController.index);
   router.post('/api/tests/generate', controller.testController.makePaper);
   router.get('/api/tests/count', controller.testController.getTestCount);
+  router.get('/api/tests/done', controller.testController.getDoneTestList);
+  router.get(
+    '/api/tests/:userId/done',
+    controller.testController.getDoneTestListByUserId
+  );
   router.get('/api/tests/:testId', controller.testController.getPaper);
   router.post(
     '/api/tests/saveUncompleted',

@@ -52,6 +52,7 @@ module.exports = {
   'testController.invalidUserAnswers': 'userAnswers字段存在问题',
   'testController.paperHasNotBeenDone': '试卷尚未完成',
   'testController.cannotCopySelfPaper': '无法复制自己的试卷',
+  'testController.unexistUser': '该用户不存在',
 
   // testService
   'testService.notEnoughQuestionToMakePaper': '没有足够的题目进行组卷',
