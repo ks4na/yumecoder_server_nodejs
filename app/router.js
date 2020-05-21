@@ -93,6 +93,10 @@ module.exports = app => {
     controller.questionController.getCollectedQuestionsByCategoryId
   );
   router.get(
+    '/api/questions/:categoryId/collect',
+    controller.questionController.getCollectionsByCategoryId
+  );
+  router.get(
     '/api/questions/:categoryId/mistakes',
     controller.questionController.gitMistakes
   );

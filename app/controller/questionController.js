@@ -175,6 +175,41 @@ class QuestionController extends Controller {
     };
   }
 
+  async getCollectionsByCategoryId() {
+    const { ctx, service } = this;
+    let { categoryId } = ctx.params;
+    const { userId } = ctx;
+
+    // 参数校验
+    ctx.validate(
+      {
+        categoryId: 'id',
+      },
+      { categoryId }
+    );
+
+    // 校验 categoryId 是否合法
+    categoryId = parseInt(categoryId);
+    const isValidCategory = await service.questionService.validateCategory(
+      categoryId
+    );
+    if (!isValidCategory) {
+      ctx.body = {
+        code: 1,
+        msg: ctx.__('questionController.invalidCategoryId'),
+      };
+      return;
+    }
+
+    // 获取该用户对应的二级分类下所有题目
+    const collectedQuestions = await service.questionService.getAllCollectedQuestionsByUserIdAndCategoryId(
+      userId,
+      categoryId
+    );
+
+    ctx.body = collectedQuestions;
+  }
+
   async gitMistakes() {
     const { ctx, service } = this;
     let { categoryId } = ctx.params;
