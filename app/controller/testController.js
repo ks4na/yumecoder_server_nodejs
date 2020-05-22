@@ -76,10 +76,14 @@ class TestController extends Controller {
       onlyMistakeFlag
     );
 
-    ctx.body = {
-      code,
-      msg,
-    };
+    if (code !== 0) {
+      ctx.body = {
+        code,
+        msg,
+      };
+    } else {
+      ctx.body = msg.testId;
+    }
   }
 
   async getPaper() {
