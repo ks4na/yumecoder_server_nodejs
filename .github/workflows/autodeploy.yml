@@ -40,28 +40,28 @@ jobs:
       - name: Deploy to sit server
         uses: Pendect/action-rsyncer@v1.1.0
         env:
-          DEPLOY_KEY: ${{secrets.tencentcloud_DEPLOY_KEY}}
+          DEPLOY_KEY: ${{secrets.DEPLOY_KEY_CLOUDCONE}}
         with:
           flags: '-avzr --delete'
           options: ''
           ssh_options: ''
           src: '.'
-          dest: '${{ secrets.tencentcloud_USERNAME }}@${{ secrets.tencentcloud_HOST }}:./yumecoder/server_nodejs/sit/source'
+          dest: '${{ secrets.USER_CLOUDCONE }}@${{ secrets.HOST_CLOUDCONE }}:./yumecoder/server_nodejs/sit/source'
 
       - name: Run docker commands
         uses: appleboy/ssh-action@master
         env:
-          TC_USERNAME: ${{ secrets.tencentcloud_USERNAME }}
+          USER: ${{ secrets.USER_CLOUDCONE }}
         with:
-          host: ${{ secrets.tencentcloud_HOST }}
-          username: ${{ secrets.tencentcloud_USERNAME }}
-          key: ${{ secrets.tencentcloud_DEPLOY_KEY }}
-          envs: TC_USERNAME
+          host: ${{ secrets.HOST_CLOUDCONE }}
+          username: ${{ secrets.USER_CLOUDCONE }}
+          key: ${{ secrets.DEPLOY_KEY_CLOUDCONE }}
+          envs: USER
           timeout: 60s
           proxy_timeout: 60s
           debug: true
           script: |
-            cd /home/$TC_USERNAME/yumecoder/server_nodejs/sit
+            cd /home/$USER/yumecoder/server_nodejs/sit
             ./DockerBootstrap.sh
 
   deploy_to_prod:
@@ -81,26 +81,26 @@ jobs:
       - name: Deploy to prod server
         uses: Pendect/action-rsyncer@v1.1.0
         env:
-          DEPLOY_KEY: ${{secrets.tencentcloud_DEPLOY_KEY}}
+          DEPLOY_KEY: ${{secrets.DEPLOY_KEY_CLOUDCONE}}
         with:
           flags: '-avzr --delete'
           options: ''
           ssh_options: ''
           src: '.'
-          dest: '${{ secrets.tencentcloud_USERNAME }}@${{ secrets.tencentcloud_HOST }}:./yumecoder/server_nodejs/prod/source'
+          dest: '${{ secrets.USER_CLOUDCONE }}@${{ secrets.HOST_CLOUDCONE }}:./yumecoder/server_nodejs/prod/source'
 
       - name: Run docker commands
         uses: appleboy/ssh-action@master
         env:
-          TC_USERNAME: ${{ secrets.tencentcloud_USERNAME }}
+          USER: ${{ secrets.USER_CLOUDCONE }}
         with:
-          host: ${{ secrets.tencentcloud_HOST }}
-          username: ${{ secrets.tencentcloud_USERNAME }}
-          key: ${{ secrets.tencentcloud_DEPLOY_KEY }}
-          envs: TC_USERNAME
+          host: ${{ secrets.HOST_CLOUDCONE }}
+          username: ${{ secrets.USER_CLOUDCONE }}
+          key: ${{ secrets.DEPLOY_KEY_CLOUDCONE }}
+          envs: USER
           timeout: 60s
           proxy_timeout: 60s
           debug: true
           script: |
-            cd /home/$TC_USERNAME/yumecoder/server_nodejs/prod
+            cd /home/$USER/yumecoder/server_nodejs/prod
             ./DockerBootstrap.sh
