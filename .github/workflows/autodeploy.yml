@@ -104,4 +104,3 @@ jobs:
           script: |
             cd "$DEST_DIR"/../
             bash ./DockerBootstrap.sh
-
