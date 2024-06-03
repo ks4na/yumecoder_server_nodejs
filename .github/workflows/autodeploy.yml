@@ -19,7 +19,7 @@ jobs:
 
       - name: Run lint (& test, cov ...)
         run: |
-          npm install 
+          npm ci 
           npm run lint
           echo "test, cov..."
           echo "ok"
